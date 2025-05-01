@@ -1,12 +1,8 @@
 'use client';
 
 import { Logo, AuthComponent, FeaturesGrid } from '../../components/onboarding-components';
-import { usePathname } from 'next/navigation';
 
 export default function OnboardingPage() {
-  const pathname = usePathname();
-  const isSignUp = pathname === '/onboarding/sign-up';
-
   return (
     <div className="min-h-screen bg-black flex relative overflow-hidden">
       {/* Background Gradient */}
@@ -25,7 +21,7 @@ export default function OnboardingPage() {
         {/* Right Section */}
         <div className="flex-1 flex items-center justify-center p-8 xl:p-12">
           <div className="w-full max-w-[380px]">
-            <AuthComponent mode={isSignUp ? 'sign-up' : 'sign-in'} />
+            <AuthComponent mode="sign-in" />
           </div>
         </div>
       </div>

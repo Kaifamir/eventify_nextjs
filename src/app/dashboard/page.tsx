@@ -7,9 +7,26 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Sparkles } from "lucide-react";
 import { AddEventModal } from "@/app/components/events/add-event-modal";
 import type { EventFormValues } from "@/app/components/events/add-event-form";
+import { useUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 export default function DashboardPage() {
+  const { isLoaded, user } = useUser();
   const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
+
+  // Handle loading state
+  if (!isLoaded) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-[#1d1d1f]">
+        <div className="text-white">Loading...</div>
+      </div>
+    );
+  }
+
+  // Double check authentication
+  if (!user) {
+    redirect('/onboarding');
+  }
 
   const handleAddEvent = (values: EventFormValues) => {
     // Here you would typically save the event to your backend

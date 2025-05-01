@@ -103,6 +103,7 @@ export const AuthComponent = ({ mode }: { mode: 'sign-in' | 'sign-up' }) => {
       path="/onboarding"
       signUpUrl="/onboarding/sign-up"
       afterSignInUrl="/dashboard"
+      redirectUrl="/dashboard"
     />
   ) : (
     <SignUp 
@@ -111,6 +112,7 @@ export const AuthComponent = ({ mode }: { mode: 'sign-in' | 'sign-up' }) => {
       path="/onboarding/sign-up"
       signInUrl="/onboarding"
       afterSignUpUrl="/dashboard"
+      redirectUrl="/dashboard"
     />
   );
 };

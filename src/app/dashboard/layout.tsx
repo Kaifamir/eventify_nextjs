@@ -1,6 +1,7 @@
 'use client';
 
 import { Sidebar } from "@/app/components/dashboard/sidebar";
+import { UserButton } from "@/app/components/dashboard/user-button";
 
 export default function DashboardLayout({
   children,
@@ -15,6 +16,10 @@ export default function DashboardLayout({
           <Sidebar />
         </div>
         <main className="flex-1 md:pl-72 relative">
+          {/* Header */}
+          <div className="fixed top-0 right-0 p-4 z-50 md:p-6">
+            <UserButton />
+          </div>
           <div className="h-full p-8">
             {children}
           </div>

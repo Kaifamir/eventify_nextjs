@@ -1,14 +1,31 @@
 import { authMiddleware } from "@clerk/nextjs";
 
 export default authMiddleware({
-  publicRoutes: ["/", "/onboarding", "/onboarding/sign-up"]
+  publicRoutes: ["/", "/onboarding", "/onboarding/sign-up", "/sign-in"],
+  afterAuth(auth, req) {
+    // Handle authenticated users
+    if (auth.userId) {
+      // If they're trying to access auth pages, redirect to dashboard
+      if (req.nextUrl.pathname.startsWith('/onboarding') || 
+          req.nextUrl.pathname.startsWith('/sign-in') || 
+          req.nextUrl.pathname.startsWith('/sign-up')) {
+        const dashboard = new URL('/dashboard', req.url);
+        return Response.redirect(dashboard);
+      }
+    }
+    // Handle non-authenticated users
+    else {
+      // If they're trying to access protected pages, redirect to onboarding
+      if (!req.nextUrl.pathname.startsWith('/onboarding') && 
+          !req.nextUrl.pathname.startsWith('/sign-in') &&
+          req.nextUrl.pathname !== '/') {
+        const onboarding = new URL('/onboarding', req.url);
+        return Response.redirect(onboarding);
+      }
+    }
+  }
 });
 
 export const config = {
-  matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    // Always run for API routes
-    '/(api|trpc)(.*)',
-  ],
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };
